@@ -4,7 +4,7 @@ import http from 'http';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import router from './router';
-
+import 'dotenv/config';
 
 
 const app = express();
@@ -22,3 +22,8 @@ server.listen(8080, () => {
 });
 
 app.use('/', router());
+
+
+mongoose.connect(process.env.MONGO_CONNECT)
+    .then(() => console.log('mongoose connect'))
+    .catch((error) => console.log('mongoose error', error))

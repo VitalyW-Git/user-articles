@@ -1,10 +1,10 @@
 import express from 'express';
 
-import users from './users';
+import usersRouter from './users.router';
 
 const router = express.Router();
 
 export default (): express.Router => {
-    users(router);
+    usersRouter(router);
     return router;
 };
