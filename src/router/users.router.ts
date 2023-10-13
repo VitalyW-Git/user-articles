@@ -1,7 +1,8 @@
 import {Router} from 'express';
 
-import {UsersController} from '../controllers/index'
+import {UserController} from '../controllers/index'
+import {registerValidation} from "../validation";
 
 export default (router: Router) => {
-    router.get('/news', UsersController.actionUser);
+    router.get('/user', registerValidation, UserController.actionUser);
 };
