@@ -7,4 +7,6 @@ export interface IUser extends Document {
     date_start: Date
     created_at: Date
     updated_at: Date
+    encryptPassword: (password: string) => string;
+    validPassword: (password: string) => boolean;
 }
