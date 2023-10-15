@@ -7,15 +7,26 @@ const newsSchema = new Schema({
       ref: 'User',
       required: true
     },
+    title: {
+      type: String,
+      required: true,
+      minlength: 3,
+      maxlength: 100,
+    },
     description: {
       type: String,
       required: true,
       minlength: 3,
-      maxlength: 50,
     },
+    status: {
+      type: Boolean,
+      default: true
+    },
+    // ISO
     date_start: {
       required: false,
-      type: Date.now
+      type: Date,
+      default: Date.now
     },
   },
   {

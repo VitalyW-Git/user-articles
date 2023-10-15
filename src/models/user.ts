@@ -2,7 +2,7 @@ import {Schema, model, Document} from 'mongoose';
 import {hashSync, genSaltSync, compareSync} from 'bcrypt';
 import {IUser} from '../interfaces/user.interfaces'
 import {IToken} from "../interfaces/token.interfaces";
-import generateToken from "../helper/token";
+import {generateToken} from "../helper/token";
 
 const userSchema = new Schema({
     username: {

@@ -13,18 +13,19 @@ export const actionRegistration = async (req: Request, res: Response): Promise<R
     const maxAge = 2 * 60 * 60
     const token = await user.getToken(maxAge);
     res.cookie("jwt", token, {
-      secure: true,
       httpOnly: true,
       maxAge: maxAge * 1000,
     });
     return res.status(200).json({
       user,
       message: "Регистрация успешна",
+      success: true,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(401).json({
       message: 'Не удалось зарегистрироваться',
       error: error.message,
+      success: false,
     });
   }
 };
@@ -35,33 +36,36 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
     const {email, password} = req.body
     const user = await userModel.findOne({email: email});
     if (!user) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: `Пользователя с email: ${email} не существует`,
         path: "email",
+        success: false,
       });
     }
     const isValidPass = await user.validPassword(password);
     if (!isValidPass) {
-      return res.status(401).json({
-        message: "Не верный пароль",
+      return res.status(400).json({
+        message: "Неверный пароль",
         path: "password",
+        success: false,
       });
     }
     const maxAge = 2 * 60 * 60
     const token = await user.getToken(maxAge);
     res.cookie("jwt", token, {
-      secure: true,
       httpOnly: true,
       maxAge: maxAge * 1000,
     });
     return res.status(200).json({
       message: "Авторизация успешна",
+      success: true,
     });
 
   } catch (error) {
-    return res.status(500).json({
+    return res.status(401).json({
       message: 'Не удалось авторизоваться',
       error: error.message,
+      success: false,
     });
   }
 }
