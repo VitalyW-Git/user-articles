@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "removeComments": true,
     "module": "commonjs",
+    "lib": ["es6"],
     "outDir": "dist",
     "noImplicitAny": true,
     "sourceMap": true,
@@ -11,7 +12,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": "./src",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["node_modules"]
