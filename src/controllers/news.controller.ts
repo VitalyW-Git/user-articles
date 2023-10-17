@@ -1,10 +1,12 @@
 import {Request, Response} from 'express'
-import newsModel from "../models/news";
 import {ICreateNews} from "../interfaces/news.interfaces";
+import newsModel from "../models/news";
 
 export const actionGetAllNews = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const news = await newsModel.find().select('title description status date_start').lean().exec();
     return res.status(200).json({
+      news,
       success: true,
     });
   } catch (error) {
@@ -16,13 +18,13 @@ export const actionGetAllNews = async (req: Request, res: Response): Promise<Res
   }
 }
 
-export const actionCreateArticle = async (req: Request & {userId?: string}, res: Response): Promise<Response> => {
+export const actionCreateArticle = async (req: Request & { userId?: string }, res: Response): Promise<Response> => {
   try {
     const {description, title, date_start} = req.body;
     let propertyNews: ICreateNews = {
       description,
       title,
-      user: req?.userId,
+      user_id: req?.userId,
     }
     if (date_start && date_start.length) {
       propertyNews = {
@@ -32,23 +34,32 @@ export const actionCreateArticle = async (req: Request & {userId?: string}, res:
     }
     const news = new newsModel(propertyNews);
     const newNews = await news.save();
+    const selectedFields = await newsModel.findById(newNews._id).lean().select('title description').lean();
     return res.status(200).json({
-      news: newNews,
+      news: selectedFields,
       success: true,
     });
   } catch (error) {
-    console.log('error', error.message)
     return res.status(401).json({
       message: 'Ошибка при создании записи',
       error: error.message,
       success: false,
+      isAuth: true,
     });
   }
 }
 
-export const actionUpdateArticle = async (req: Request, res: Response): Promise<Response> => {
+export const actionUpdateArticle = async (req: Request & { userId?: string }, res: Response): Promise<Response> => {
   try {
+    const user_id = req?.userId;
+    const {article_id, description, title} = req.body;
+    const news = await newsModel.findOneAndUpdate(
+      {user_id, _id: article_id},
+      {description, title},
+      {new: true, select: 'title description'}
+    ).lean();
     return res.status(200).json({
+      news: news,
       success: true,
     });
   } catch (error) {
@@ -56,20 +67,35 @@ export const actionUpdateArticle = async (req: Request, res: Response): Promise<
       message: 'Ошибка при обновлении записи',
       error: error.message,
       success: false,
+      isAuth: true,
     });
   }
 }
 
-export const actionDeleteArticle = async (req: Request, res: Response): Promise<Response> => {
+export const actionDeleteArticle = async (req: Request & { userId?: string }, res: Response): Promise<Response> => {
   try {
+    const user_id = req?.userId;
+    const {article_id} = req.body;
+    const news = await newsModel.findOneAndUpdate(
+      {user_id, _id: article_id},
+      {status: false},
+      {new: true}
+    ).lean();
+    if (news) {
+      return res.status(200).json({
+        success: true,
+        isAuth: true,
+      });
+    }
     return res.status(200).json({
-      success: true,
+      success: false,
+      isAuth: true,
     });
   } catch (error) {
     return res.status(401).json({
       message: 'Ошибка при удалении записи',
-      error: error.message,
       success: false,
+      isAuth: true,
     });
   }
 }

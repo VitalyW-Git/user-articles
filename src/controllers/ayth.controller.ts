@@ -2,7 +2,6 @@ import {Request, Response} from 'express'
 import userModel from "../models/user";
 
 export const actionRegistration = async (req: Request, res: Response): Promise<Response> => {
-  console.log(req.body)
   try {
     const {username, email, password} = req.body;
     const user = new userModel({
@@ -31,7 +30,6 @@ export const actionRegistration = async (req: Request, res: Response): Promise<R
 };
 
 export const actionLogin = async (req: Request, res: Response): Promise<Response> => {
-  console.log(req.body)
   try {
     const {email, password} = req.body
     const user = await userModel.findOne({email: email});

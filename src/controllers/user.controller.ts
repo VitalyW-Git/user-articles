@@ -5,8 +5,8 @@ import userModel from "../models/user";
 export const actionUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     if (!!req.cookies && req?.cookies?.hasOwnProperty('jwt')) {
-      const {id} = await verifyToken(req.cookies['jwt']);
-      const user = await userModel.findById(id).select("-_id username email -password");
+      const property = await verifyToken(req.cookies['jwt']);
+      const user = await userModel.findById(property?.id).select("-_id username email -password").lean();
       if (user) {
         return res.status(200).json({
           user,

@@ -1,6 +1,47 @@
 import {body} from 'express-validator';
+import newsModel from "../../models/news";
 
-export const createPostValidation = [
+export const deleteNewsValidation = [
+  body('article_id')
+    .trim()
+    .custom(async (article_id) => {
+      const existingNews = await newsModel.findById(article_id);
+      if (!existingNews) {
+        throw new Error('Запись не найдена')
+      }
+    }),
+];
+export const updateNewsValidation = [
+  body('article_id')
+    .trim()
+    .custom(async (article_id) => {
+      const existingNews = await newsModel.findById(article_id);
+      if (!existingNews) {
+        throw new Error('Запись не найдена')
+      }
+    }),
+  body('title')
+    .custom((value, {req}) => {
+      if (value.length && value.length < 3) {
+        throw new Error('Заголовок не менее 3-х символов');
+      }
+      if (!value) {
+        throw new Error('Поле обязательное для заполнения');
+      }
+      return true;
+    }),
+  body('description')
+    .custom((value, {req}) => {
+      if (value.length && value.length < 3) {
+        throw new Error('Заголовок не менее 3-х символов');
+      }
+      if (!value) {
+        throw new Error('Поле обязательное для заполнения');
+      }
+      return true;
+    }),
+];
+export const createNewsValidation = [
   body('title')
     .custom((value, {req}) => {
       if (value.length && value.length < 3) {

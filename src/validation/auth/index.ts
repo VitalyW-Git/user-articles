@@ -18,7 +18,7 @@ export const registerValidation = [
     .isEmail()
     .custom(async (email) => {
       const existingUser = await User.findOne({email});
-      if (existingUser) {
+      if (!!existingUser) {
         throw new Error('Пользователь с таким Email уже существует')
       }
     }),

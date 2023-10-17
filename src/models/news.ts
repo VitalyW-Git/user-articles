@@ -2,7 +2,7 @@ import {Schema, model, Document} from 'mongoose';
 import {INews} from '../interfaces/news.interfaces'
 
 const newsSchema = new Schema({
-    user: {
+    user_id: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
