@@ -1,16 +1,16 @@
 {
   "version": 2,
+  "devCommand": "npm run dev",
   "builds": [
     {
       "src": "dist/index.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/index.js"
+      "dest": "/src/server.ts"
     }
   ]
 }
