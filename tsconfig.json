@@ -15,6 +15,9 @@
     "allowSyntheticDefaultImports": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "./api/*.ts",
+    "./*.js",
+    "./src/**/*.ts"
+  ],
 }

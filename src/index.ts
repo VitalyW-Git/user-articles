@@ -25,3 +25,5 @@ server.listen(PORT, () => {
 app.use('/', router());
 
 connectDB()
+
+export default app;
