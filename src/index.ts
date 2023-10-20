@@ -10,13 +10,9 @@ import connectDB from "./db/mongoDb";
 dotenvConfig();
 
 const app = express();
-let urlClient = process.env.URL_PROD
-if (process.env.NODE_ENV !== 'production') {
-    urlClient = process.env.URL_DEV
-}
-
+console.log(`${process.env.URL_DEV}`)
 app.use(cors({
-    origin: urlClient,
+    origin: `${process.env.URL_DEV}`,
     credentials: true,
 }));
 app.use(cookieParser());
