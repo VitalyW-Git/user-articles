@@ -11,8 +11,9 @@ dotenvConfig();
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://app-frontend-puble.vercel.ap'],
+    origin: ['http://localhost:3000', 'https://app-frontend-puble.vercel.app'],
     credentials: true,
+    optionsSuccessStatus: 200
 }));
 app.use(cookieParser());
 app.use(bodyParser.json());
