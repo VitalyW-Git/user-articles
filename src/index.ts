@@ -11,7 +11,7 @@ dotenvConfig();
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://app-frontend-puble.vercel.app'],
+    origin: [`${process.env.URL_DEV}`, `${process.env.URL_PROD}`],
     credentials: true,
     optionsSuccessStatus: 200
 }));
