@@ -10,9 +10,8 @@ import connectDB from "./db/mongoDb";
 dotenvConfig();
 
 const app = express();
-console.log(`${process.env.URL_DEV}`)
 app.use(cors({
-    origin: `${process.env.URL_DEV}`,
+    origin: ['http://localhost:3000', 'https://app-frontend-puble.vercel.ap'],
     credentials: true,
 }));
 app.use(cookieParser());
@@ -20,6 +19,35 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 3000;
+
+app.post('/post/test', (req, res) => {
+    try {
+        return res.status(200).json({
+            success: true,
+            message: 'Нет ошибки post',
+        });
+    } catch (error) {
+        return res.status(200).json({
+            success: false,
+            message: 'post Ошибка ' + error.message,
+        });
+    }
+});
+
+app.get('/get/test', (req, res) => {
+    try {
+        return res.status(200).json({
+            success: true,
+            message: 'Нет ошибки get',
+        });
+    } catch (error) {
+        return res.status(200).json({
+            success: false,
+            message: 'get Ошибка ' + error.message,
+        });
+    }
+});
+
 server.listen(PORT, () => {
     console.log(`Server start http://localhost:${PORT}/`);
 });
