@@ -5,7 +5,7 @@ export const registerValidation = [
   body('username')
     .custom((value, {req}) => {
       if (value.length && value.length < 3) {
-        throw new Error('Пароль не менее 3-х символов');
+        throw new Error('Имя не менее 3-х символов');
       }
       if (!value) {
         throw new Error('Поле обязательное для заполнения');

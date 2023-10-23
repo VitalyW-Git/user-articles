@@ -17,12 +17,12 @@ export const actionRegistration = async (req: Request, res: Response): Promise<R
     });
     return res.status(200).json({
       user,
-      message: "Регистрация успешна",
+      message: ["Регистрация успешна"],
       success: true,
     });
   } catch (error) {
     return res.status(401).json({
-      message: 'Не удалось зарегистрироваться',
+      message: ['Не удалось зарегистрироваться'],
       error: error.message,
       success: false,
     });
@@ -35,7 +35,7 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
     const user = await userModel.findOne({email: email});
     if (!user) {
       return res.status(400).json({
-        message: `Пользователя с email: ${email} не существует`,
+        message: [`Пользователя с email: ${email} не существует`],
         path: "email",
         success: false,
       });
@@ -43,7 +43,7 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
     const isValidPass = await user.validPassword(password);
     if (!isValidPass) {
       return res.status(400).json({
-        message: "Неверный пароль",
+        message: ["Неверный пароль"],
         path: "password",
         success: false,
       });
@@ -55,13 +55,14 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
       maxAge: maxAge * 1000,
     });
     return res.status(200).json({
-      message: "Авторизация успешна",
+      user: {username: user.username, email: user.email},
+      message: ["Авторизация успешна"],
       success: true,
     });
 
   } catch (error) {
     return res.status(401).json({
-      message: 'Не удалось авторизоваться',
+      message: ['Не удалось авторизоваться'],
       error: error.message,
       success: false,
     });

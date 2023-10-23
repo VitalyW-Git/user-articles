@@ -34,7 +34,7 @@ export const actionCreateArticle = async (req: Request & { userId?: string }, re
     }
     const news = new newsModel(propertyNews);
     const newNews = await news.save();
-    const selectedFields = await newsModel.findById(newNews._id).lean().select('title description').lean();
+    const selectedFields = await newsModel.findById(newNews._id).select('title description').lean();
     return res.status(200).json({
       news: selectedFields,
       success: true,
