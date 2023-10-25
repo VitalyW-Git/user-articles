@@ -29,7 +29,7 @@ export const actionGetNewsUser = async (req: Request & { userId?: string }, res:
   try {
     const news = await newsModel
       .find({ user_id: req.userId })
-      .select('title description date_start status')
+      .select('title description date_start created_at status')
       .lean();
     return res.status(200).json({
       news,

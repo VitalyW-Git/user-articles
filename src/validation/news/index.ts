@@ -2,10 +2,10 @@ import {body} from 'express-validator';
 import newsModel from "../../models/news";
 
 export const deleteNewsValidation = [
-  body('article_id')
+  body('id')
     .trim()
-    .custom(async (article_id) => {
-      const existingNews = await newsModel.findById(article_id);
+    .custom(async (id) => {
+      const existingNews = await newsModel.findById(id);
       if (!existingNews) {
         throw new Error('Запись не найдена')
       }
@@ -64,7 +64,6 @@ export const createNewsValidation = [
     }),
   body('date_start')
     .custom((value, {req}) => {
-      console.log(value)
       if (value && value.length) {
         const currentDate = new Date();
         const selectedDate = new Date(value);

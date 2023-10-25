@@ -4,7 +4,7 @@ import newsModel from "../models/news";
 
 export const actionGetAllNews = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const news = await newsModel.find().select('title description status date_start').lean().exec();
+    const news = await newsModel.find().select('title description status date_start created_at').lean().exec();
     return res.status(200).json({
       news,
       success: true,
@@ -34,14 +34,15 @@ export const actionCreateArticle = async (req: Request & { userId?: string }, re
     }
     const news = new newsModel(propertyNews);
     const newNews = await news.save();
-    const selectedFields = await newsModel.findById(newNews._id).select('title description').lean();
+    const selectedFields = await newsModel.findById(newNews._id).select('title description date_start status').lean();
     return res.status(200).json({
       news: selectedFields,
+      message: ['Новость успешна создана!'],
       success: true,
     });
   } catch (error) {
     return res.status(401).json({
-      message: 'Ошибка при создании записи',
+      message: ['Ошибка при создании записи!'],
       error: error.message,
       success: false,
       isAuth: true,
@@ -56,15 +57,16 @@ export const actionUpdateArticle = async (req: Request & { userId?: string }, re
     const news = await newsModel.findOneAndUpdate(
       {user_id, _id: article_id},
       {description, title},
-      {new: true, select: 'title description'}
+      {new: true, select: 'title description date_start created_at status'}
     ).lean();
     return res.status(200).json({
       news: news,
+      message: ['Новость успешна обновлена!'],
       success: true,
     });
   } catch (error) {
     return res.status(401).json({
-      message: 'Ошибка при обновлении записи',
+      message: ['Ошибка при обновлении записи!'],
       error: error.message,
       success: false,
       isAuth: true,
@@ -74,8 +76,8 @@ export const actionUpdateArticle = async (req: Request & { userId?: string }, re
 
 export const actionDeleteArticle = async (req: Request & { userId?: string }, res: Response): Promise<Response> => {
   try {
+    const article_id = req.params.id;
     const user_id = req?.userId;
-    const {article_id} = req.body;
     const news = await newsModel.findOneAndUpdate(
       {user_id, _id: article_id},
       {status: false},
@@ -87,13 +89,14 @@ export const actionDeleteArticle = async (req: Request & { userId?: string }, re
         isAuth: true,
       });
     }
-    return res.status(200).json({
+    return res.status(401).json({
+      message: ['Ошибка при удалении записи'],
       success: false,
       isAuth: true,
     });
   } catch (error) {
     return res.status(401).json({
-      message: 'Ошибка при удалении записи',
+      message: ['Ошибка при удалении записи'],
       success: false,
       isAuth: true,
     });

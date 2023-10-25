@@ -9,10 +9,9 @@ export default (router: Router) => {
   router.get('/news/get-all',
     NewsController.actionGetAllNews
   );
-  router.delete('/news/delete',
+  router.delete('/news/delete/:id',
     checkToken,
     deleteNewsValidation,
-    handleNewsValidation,
     NewsController.actionDeleteArticle
   );
   router.post('/news/create',
