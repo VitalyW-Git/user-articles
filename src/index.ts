@@ -23,9 +23,15 @@ const PORT = process.env.PORT || 3000;
 
 app.post('/post/test', (req, res) => {
     try {
+        res.cookie("test", '123456789djhjdfhsd', {
+            httpOnly: true,
+            maxAge: 2 * 60 * 60 * 1000,
+            secure: process.env.NODE_ENV == 'production',
+            path: '/',
+        });
         return res.status(200).json({
             success: true,
-            message: 'Нет ошибки post',
+            message: `Нет ошибки post ${process.env.NODE_ENV}`,
         });
     } catch (error) {
         return res.status(200).json({
@@ -39,7 +45,7 @@ app.get('/get/test', (req, res) => {
     try {
         return res.status(200).json({
             success: true,
-            message: 'Нет ошибки get',
+            message: `Нет ошибки get ${process.env.NODE_ENV}`,
         });
     } catch (error) {
         return res.status(200).json({

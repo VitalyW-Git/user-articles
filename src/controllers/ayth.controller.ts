@@ -53,6 +53,8 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: maxAge * 1000,
+      secure: process.env.NODE_ENV == 'production',
+      path: '/',
     });
     return res.status(200).json({
       user: {username: user.username, email: user.email},
