@@ -51,7 +51,7 @@ app.get('/get/test', (req, res) => {
         });
         return res.status(200).json({
             success: true,
-            message: `Нет ошибки get ${process.env.NODE_ENV}`,
+            message: `Нет ошибки GET ${process.env.NODE_ENV}`,
         });
     } catch (error) {
         return res.status(200).json({
