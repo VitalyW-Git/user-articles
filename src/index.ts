@@ -43,6 +43,12 @@ app.post('/post/test', (req, res) => {
 
 app.get('/get/test', (req, res) => {
     try {
+        res.cookie("test", '123456789djhjdfhsd', {
+            httpOnly: true,
+            maxAge: 2 * 60 * 60 * 1000,
+            secure: process.env.NODE_ENV == 'production',
+            path: '/',
+        });
         return res.status(200).json({
             success: true,
             message: `Нет ошибки get ${process.env.NODE_ENV}`,
