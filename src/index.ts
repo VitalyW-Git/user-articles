@@ -27,7 +27,8 @@ app.post('/post1/test', (req, res) => {
             httpOnly: false,
             maxAge: 2 * 60 * 60 * 1000,
             secure: false,
-            path: '/',
+            path: 'https://app-frontend-puble.vercel.app',
+            sameSite: 'none',
         });
         return res.status(200).json({
             success: true,
@@ -48,6 +49,7 @@ app.post('/post2/test', (req, res) => {
             maxAge: 2 * 60 * 60 * 1000,
             secure: true,
             path: '/',
+            sameSite: 'none',
         });
         return res.status(200).json({
             success: true,
