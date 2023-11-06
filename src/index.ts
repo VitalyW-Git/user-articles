@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import router from './router';
 import { config as dotenvConfig } from 'dotenv';
 import connectDB from "./db/mongoDb";
+import {CookieOptionsType} from "./type/cookie-options.type";
+import cookieOptions from "./config/cookie-options";
 
 dotenvConfig();
 
@@ -23,16 +25,15 @@ const PORT = process.env.PORT || 3000;
 
 app.post('/post1/test', (req, res) => {
     try {
-        res.cookie("post1", '123456789djhjdfhsdpost1', {
-            httpOnly: false,
-            maxAge: 2 * 60 * 60 * 1000,
-            secure: false,
-            path: 'https://app-frontend-puble.vercel.app',
-            sameSite: 'none',
-        });
+        const config: CookieOptionsType = {
+          ...cookieOptions,
+          maxAge: 2 * 60 * 60 * 1000,
+        }
+        res.cookie("post1", '123456789djhjdfhsdpost1', config);
         return res.status(200).json({
             success: true,
             message: `Нет ошибки post ${process.env.NODE_ENV}`,
+            config
         });
     } catch (error) {
         return res.status(200).json({
