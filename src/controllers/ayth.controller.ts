@@ -1,5 +1,8 @@
 import {Request, Response} from 'express'
 import userModel from "../models/user";
+import cookieOptions from "../config/cookie-options";
+import {CookieOptionsType} from "../type/cookie-options.type";
+
 
 export const actionRegistration = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -11,10 +14,12 @@ export const actionRegistration = async (req: Request, res: Response): Promise<R
     await user.save();
     const maxAge = 2 * 60 * 60
     const token = await user.getToken(maxAge);
-    res.cookie("jwt", token, {
-      httpOnly: true,
+
+    const config: CookieOptionsType = {
+      ...cookieOptions,
       maxAge: maxAge * 1000,
-    });
+    }
+    res.cookie("jwt", token, config);
     return res.status(200).json({
       user,
       message: ["Регистрация успешна"],
@@ -50,12 +55,11 @@ export const actionLogin = async (req: Request, res: Response): Promise<Response
     }
     const maxAge = 2 * 60 * 60
     const token = await user.getToken(maxAge);
-    res.cookie("jwt", token, {
-      httpOnly: true,
+    const config: CookieOptionsType = {
+      ...cookieOptions,
       maxAge: maxAge * 1000,
-      secure: process.env.NODE_ENV == 'production',
-      path: '/',
-    });
+    }
+    res.cookie("jwt", token, config);
     return res.status(200).json({
       user: {username: user.username, email: user.email},
       message: ["Авторизация успешна"],
