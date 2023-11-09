@@ -1,9 +1,9 @@
 import {CookieOptionsType} from "../type/cookie-options.type";
 
 const cookieOptions: CookieOptionsType = {
-  httpOnly: process.env.NODE_ENV === 'production',
+  httpOnly: true,
   maxAge: 1000,
-  secure: process.env.NODE_ENV === 'production',
+  secure: true,
   path: '/',
   sameSite: 'none',
 }
